@@ -1,0 +1,117 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      picProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//Note: One can type in an invalid model name to get a list of all defined models at runtime!
+
+SolverSettings
+{
+    typeIdList                      (e Ar+);//Defined species
+    fieldCalculation                ();
+
+    ChargeDistribution              VolumeWeighting;//Model for weighting the charge to the mesh
+    FieldWeigthing                  VolumeWeighting;//Model for weighting the electric field to the parcel
+
+    spaceCharge                     0;//[As] space charge to be uniformly distributed
+
+    warnCellTrajectory              0.3;//Warn once every time step if a particle moves further than x of the cell length (there may even be faster particles)
+}
+
+Diagnostics
+{
+    modelList (KineticEnergy FieldEnergy Temperature);//Select these Diagnostic models
+
+    KineticEnergyCoeffs
+    {
+        relativistic true;
+        //Can be specified for every model (optional):
+        //diagnosticControl timeStep;//[timeStep|writeTime|runTime|...]
+        //diagnosticInterval 100;//Only run every 100th timestep
+    }
+}
+
+moleculeProperties//Properties of all species defined via SolverSettings/typeIdList
+{
+    e
+    {
+        mass                            9.10938291e-31;
+        diameter                        5.6358e-15;
+        omega                           0;//viscosity index (used only by the VariableHardSphere model)
+        charge                          -1.602176565e-19;
+        solveMovement                   true;//Whether the parcel should move or stay stationary
+        nEquivalentParticles            2.5e7;//Number of real particles included in the parcel
+    }
+    Ar+
+    {
+        mass                            6.6817894e-26;
+        diameter                        3.67e-10;
+        omega                           1;
+        charge                          1.602176565e-19;
+        solveMovement                   false;
+        nEquivalentParticles            2.5e7;
+    }
+
+    SpeciesRelations//Relations between species. Required for the collision algorithms among others
+    {
+        electronTypeId e;
+    }
+}
+
+
+// BoundaryModels
+// ~~~~~~~~~~~~~~~
+BoundaryModels
+{
+    //Reflection model for boundaries of type wall (see: constant/polyMesh/boundary)
+    WallReflectionModel SpecularReflection;
+
+    //List of PatchEvent models
+    PatchEventModels
+    {
+        modelList ();
+    }
+
+    //Boundary models have to be defined for patches
+    PatchBoundaryModels
+    {
+        modelList ();
+    }
+}
+
+// ParticleMerging
+// ~~~~~~~~~~~~~~~
+ParticleMerging             none;
+
+// MaxwellSolver
+// ~~~~~~~~~~~~~~~~~~~~~
+MaxwellSolver                  ElectroStatic;
+
+// ParticlePusher
+// ~~~~~~~~~~~~~~~~~~~~~
+ParticlePusher                 Boris;
+
+// CollisionModels
+// ~~~~~~~~~~~~~~~~~~~~~
+CollisionModels
+{
+    BackgroundGasModel              none;
+    ElectronNeutralCollisionModel   none;
+    BinaryCollisionModel            none;
+    CoulombCollisionModel           none;
+    IonNeutralCollisionModel        none;
+}
+
+// ************************************************************************* //

@@ -9,33 +9,41 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0";
-    object      boundaryT;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
+application     picFoam;
 
-internalField   uniform 8;
+startFrom       latestTime;
 
-boundaryField //temperature is for particles, not boundary so this shld be fine
-{
-    leftBoundary
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-    rightBoundary
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-    emptyBoundary
-    {
-        type empty;
-    }
-}
+startTime       0;
+
+stopAt          endTime;
+
+endTime         8e-8;
+
+deltaT          1e-11;
+
+writeControl    runTime;
+
+writeInterval   2e-9;
+
+cycleWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable true;
 
 
 // ************************************************************************* //

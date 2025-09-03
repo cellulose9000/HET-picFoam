@@ -17,12 +17,12 @@ FoamFile
 
 numberDensities
 {
-    e 0;
+    e 5e6;
 };
 
 temperature
 {
-    e 0;
+    e 8;
 }
 
 InitializationModel ParticleList;
@@ -32,8 +32,8 @@ ParticleListCoeffs
     Parcel1
     {
         species e;
-        position (-4.9999e-4 0 0);
-        velocity (0 0 0);
+        position (0 0 0);
+        velocity (0 0 -300);
         temperature 0;
     }
 }

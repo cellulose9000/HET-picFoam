@@ -21,19 +21,25 @@ internalField   uniform (0 0 0);
 
 boundaryField
 {
-    leftBoundary
+    leftBoundary //trying to make a wraparound magnetic field
     {
         type            fixedValue;
-        value           uniform (0 0 0);
+        value           uniform (0.01 0 0);
     }
     rightBoundary
     {
         type            fixedValue;
-        value           uniform (0 0 0);
+        value           uniform (-0.01 0 0);
     }
-    emptyBoundary
+    upperBoundary
     {
-        type            empty;
+        type            fixedValue;
+        value           uniform (0 -0.01 0)
+    }
+    lowerBoundary
+    {
+        type            fixedValue;
+        value           uniform (0 0.01 0);
     }
 }
 

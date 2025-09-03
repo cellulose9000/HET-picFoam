@@ -9,31 +9,41 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
+    class       volVectorField;
     location    "0";
-    object      boundaryT;
+    object      boundaryU;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
+dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform 8;
+internalField   uniform (0 0 0);
 
-boundaryField //temperature is for particles, not boundary so this shld be fine
+boundaryField
 {
     leftBoundary
     {
-        type            calculated;
-        value           uniform 0;
+        type            cyclic;
     }
     rightBoundary
     {
-        type            calculated;
-        value           uniform 0;
+        type            cyclic;
     }
-    emptyBoundary
+    upperBoundary
     {
-        type empty;
+        type            cyclic;
+    }
+    lowerBoundary
+    {
+        type            cyclic;
+    }
+    frontBoundary
+    {
+        type            cyclic;
+    }
+    backBoundary
+    {
+        type            cyclic;
     }
 }
 

@@ -9,33 +9,37 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0";
-    object      boundaryT;
+    class       dictionary;
+    location    "system";
+    object      picInitialiseDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
-
-internalField   uniform 8;
-
-boundaryField //temperature is for particles, not boundary so this shld be fine
+electronVolt true;
+temperature
 {
-    leftBoundary
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-    rightBoundary
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-    emptyBoundary
-    {
-        type empty;
-    }
+    e 0.0;
+    Ar+ 0.0;
 }
+
+InitializationModel UniformDisplacement;
+
+UniformDisplacementCoeffs
+{
+    species (e Ar+);
+    min (0.025 -0.375 -0.375);
+    max (5.975 0.375 0.375);
+    particleNumbers (6000 16 16);
+
+    cycles 4;
+    displacement (0.1 0);
+    displacementDir (1 0 0);
+}
+
+solveMaxwellEquations false;
+initalizeLeapFrog false;
+clearParticles true;
+initalizeCollisionModels false;
 
 
 // ************************************************************************* //

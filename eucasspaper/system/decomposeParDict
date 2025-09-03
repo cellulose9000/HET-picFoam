@@ -9,33 +9,19 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0";
-    object      boundaryT;
+    class       dictionary;
+    location    "system";
+    object      decomposeParDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
+numberOfSubdomains 16;
 
-internalField   uniform 8;
+method          scotch;
 
-boundaryField //temperature is for particles, not boundary so this shld be fine
-{
-    leftBoundary
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-    rightBoundary
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-    emptyBoundary
-    {
-        type empty;
-    }
-}
+distributed     no;
+
+roots           ( );
 
 
 // ************************************************************************* //

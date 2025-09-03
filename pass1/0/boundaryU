@@ -19,21 +19,14 @@ dimensions      [0 1 -1 0 0 0 0];
 
 internalField   uniform (0 0 0);
 
+//velocity boundary conditions -> inlet velocity = 300m/s from back, -z
+
 boundaryField
 {
-    leftBoundary
+    backBoundary
     {
-        type            calculated;
-        value           uniform (0 0 0);
-    }
-    rightBoundary
-    {
-        type            calculated;
-        value           uniform (0 0 0);
-    }
-    emptyBoundary
-    {
-        type empty;
+        type            fixedValue;
+        value           uniform (0 0 -300); //or (0 0 -4000)
     }
 }
 

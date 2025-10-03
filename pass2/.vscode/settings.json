@@ -1,0 +1,28 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "fD": "cpp",
+        "phiE": "cpp",
+        "momentum": "cpp",
+        "linearKE": "cpp",
+        "picRhoN": "cpp",
+        "q": "cpp",
+        "rhoCharge": "cpp",
+        "picSigmaTcRMax": "cpp",
+        "picSigmaTcRMax_IonNeutral": "cpp",
+        "rhoM": "cpp",
+        "rhoN": "cpp",
+        "B": "cpp",
+        "picProperties": "cpp",
+        "fvSolution": "cpp",
+        "fvSchemes": "cpp",
+        "controlDict": "cpp",
+        "changeDictionaryDict": "cpp",
+        "blockMeshDict": "cpp",
+        "picInitialiseDict": "cpp",
+        "picInitialiseDict_InitField": "cpp",
+        "*.geo": "cpp",
+        "e": "cpp",
+        "boundaryu": "cpp"
+    }
+}

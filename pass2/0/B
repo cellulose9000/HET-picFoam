@@ -1,0 +1,104 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      B;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 0 -2 0 0 -1 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    InnerPole
+    {
+        type            codedFixedValue;
+        value           uniform (0 0 0);
+	code
+#{
+	const scalar x0 = 0.0;
+	const scalar innerpolelength = x0+0.01;
+	const scalar innerpolewidth = 0.8e-2;
+
+	const scalar B_inner=0.05;
+
+	const fvPatch& boundaryPatch = patch();
+	const vectorField faceC = boundaryPatch.faceCentres();
+	vectorfield& Bpatch = *this;
+	
+	forAll(Bpatch, faceI){
+		const point& pt = faceC[faceI];
+        const scalar axial = pt.x(); 
+		const scalar radial = pt.y();
+                
+                scalar B_axial = 0.0;
+                scalar B_radial = 0.0;
+
+                if (axial >= x0 && axial <= innerpolelength && radial >= 0.0 && radial <= innerpolewidth)
+                {
+                    B_radial = B_inner;
+                    B_axial  = 0.0;
+                }
+
+                Bpatch[faceI] = vector(B_axial, B_radial, 0.0);
+            }
+        #};
+    }
+    OuterPole
+    {
+        type            codedFixedValue;
+        value           uniform (0 0 0);
+        code #{
+            const scalar x0 = 0.0;
+            const scalar outerpoleBlength = 2.3e-2;
+            const scalar outerpoleTlength = 5.3e-2;
+            const scalar outerpolewidth = 1.2e-2
+
+            const scalar B_outer = 0.05;
+
+            const fvPatch& boundaryPatch = patch();
+            const vectorField faceC = boundaryPatch.faceCentres();
+            vectorFiedl& Bpatch = *this;
+
+            forAll(Bpatch, faceI){
+                const point& pt = faceC[faceI];
+                const scalar axial = pt.x();
+                const scalar radial = pt.y();
+
+                scalar B_axial = 0.0;
+                scalar B_radial = 0.05;
+
+                scalar side = (-1.2*axial)+(3*radial)-4.44;
+                if (side>=0){
+                    B_radial = B_outer;
+                    B_axial = 0.0;
+                }
+            Bpatch[faceI]=vector(B_axial,B_radial,0.0);   
+            }
+        #};
+    }
+    freeSpace
+    {
+        type            zeroGradient;
+    }
+
+    centerline
+    {
+        type            symmetryPlane
+    }
+}
+
+
+
+// ************************************************************************* //
